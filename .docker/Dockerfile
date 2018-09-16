@@ -1,5 +1,7 @@
-FROM php:7.2-fpm
+FROM php:7.2-fpm #базовый образ
 
+#каждый RUN cоздает промежуточный образ
+#-y означает YES, если оно нужно для установки
 RUN apt-get update && apt-get install -y \
         culr \
         wget \

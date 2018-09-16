@@ -1,7 +1,5 @@
 FROM php:7.1-fpm
 
-MAINTAINER Descamps Antoine <antoine.descamps@ineat-conseil.fr>
-
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -17,8 +15,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-install -j$(nproc) zip \
-    && docker-php-ext-install -j$(nproc) pgsql \
-    && docker-php-ext-install -j$(nproc) pdo_pgsql \
+    && docker-php-ext-install -j$(nproc) mysql \
+    && docker-php-ext-install -j$(nproc) pdo_mysql \
     && docker-php-ext-install -j$(nproc) exif \
     && docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \

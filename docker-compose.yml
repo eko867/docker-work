@@ -10,6 +10,8 @@ services: #сервисы будут располагаться в отдель�
         ports:
             - 8080:80
         restart: always # если контейнер с сервером упадет, то автоматом перезапускается
+        links:
+            - php
         depends_on:
             - php
             - db
@@ -19,21 +21,30 @@ services: #сервисы будут располагаться в отдель�
         restart: always # если контейнер с пхп упадет, то автоматом перезапускается
         volumes:
             - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini #линкуем доп настройки пхп (вывод ошибок)
+           # - ./.docker/conf/php/xdebug.ini:/etc/php/7.2/fpm/pool.d/showerrors.conf 
             - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini #линкуем конфиги xdebug
+           # - ./.docker/conf/php/xdebug.ini:/etc/php/7.2/php/conf.d/xdebug.ini 
             - .:/var/www/html
-    composer:
-        image: composer #ставим офиц.образ композера
-        container_name: composer_blog #псевдоним будущего контейнера
-        volumes:
-            - .:/app #делаем, чтобы композер видел все папки проекта
-        command: install #устанавливаем композер
+         links:
+            -db
+         depends_on:
+            -db
     db:
         image: mysql
         container_name: mysql_blog #псевдоним будущего контейнера
         restart: always # если контейнер с БД упадет, то автоматом перезапускается
         environment: #настройкиокружения + еще в .env
-            - MYSQL_ALLOW_EMPTY_PASSWORD:yes     
+            - MYSQL_ALLOW_EMPTY_PASSWORD:yes # or =yes
+            - MYSQL_DATABASE=blog
+            - MYSQL_USER=blog
+            - MYSQL_PASSWORD=password
         ports:
             - 3307:3306
         volumes:
             - ./.docker/conf/mysql/:/docker-entrypoint-initdb.d/ #линкуем, чтобы БД хранилась в проекта 
+   composer:
+        image: composer #ставим офиц.образ композера
+        container_name: composer_blog #псевдоним будущего контейнера
+        volumes:
+            - .:/app #делаем, чтобы композер видел все папки проекта
+        command: install #устанавливаем композер

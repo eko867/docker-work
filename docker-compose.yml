@@ -21,9 +21,9 @@ services: #сервисы будут располагаться в отдель�
         restart: always # если контейнер с пхп упадет, то автоматом перезапускается
         volumes:
             - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini #линкуем доп настройки пхп (вывод ошибок)
-           # - ./.docker/conf/php/xdebug.ini:/etc/php/7.2/fpm/pool.d/showerrors.conf 
+           # - ./.docker/conf/php/xdebug.ini:/etc/php/7.2/fpm/pool.d/showerrors.conf #вряд ли это верно
             - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini #линкуем конфиги xdebug
-           # - ./.docker/conf/php/xdebug.ini:/etc/php/7.2/php/conf.d/xdebug.ini 
+           # - ./.docker/conf/php/xdebug.ini:/etc/php/7.2/php/conf.d/xdebug.ini №вряд ли это верно
             - .:/var/www/html
          links:
 - db
